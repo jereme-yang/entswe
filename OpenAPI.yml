@@ -1,0 +1,51 @@
+openapi: 3.0.0
+info:
+  title: Seat manager API
+  description: Seat Selection API is used to query the movie theatres database for available seats for a users selected movie and time. Seat Selection API is mainly used to retrieve seat information to be displayed on a webpage, but it can also be used to modify the seats in the database once a purchase is processed.
+  version: 0.1.9
+
+paths:
+  /seats:
+    get:
+      summary: returns a list of all available seats, or -1 on failure.
+
+      responses:
+        "200":
+          description: successful operation: A JSON array of seat tuple containing seat number and price
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: tuple
+        "404":
+          description: unsuccessful operation: -1 on failure to retrieve data
+          content:
+            application/json:
+              schema:
+                type: integer
+  /seats/{seat_number}/:
+    post:
+      summary: Add a new seat to the users shopping session 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: integer
+      responses:
+        "201":
+          description: Seat Number added to the users shopping sesion
+        "400":
+          description: Error - seat number is already taken
+    delete:
+    summary: Delete seat from the users shopping session
+    responses:
+      '204':
+        description: Deleted successfully
+      '404':
+        description: id not found
+      '401':
+        description: Unauthorized access to the user shopping session
+    
+        
